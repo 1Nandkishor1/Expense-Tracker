@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useLocation} from 'react-router-dom';
 import { useAuth } from '../authUser/hooks/useAuth';
 
 const Navbar = () => {
   const { logoutHook, user } = useAuth();
   const navigate = useNavigate();
+  const location=useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [showProfile, setshowProfile] = useState(false)
 
   const handleLogout = async () => {
     try {
@@ -19,7 +21,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar__container">
-        <Link to="/groups" className="navbar__logo" onClick={() => setIsOpen(false)}>
+        <Link to="/" className="navbar__logo" onClick={() => setIsOpen(false)}>
           Split<span>Ease</span>
         </Link>
 
@@ -48,7 +50,13 @@ const Navbar = () => {
           
           {user && (
             <div className="navbar__item">
-              <span className="navbar__user" onClick={() => navigate('/profile')}>
+              <span className="navbar__user" onClick={() => {
+    if (location.pathname === '/profile') {
+      navigate(-1);
+    } else {
+      navigate('/profile');
+    }
+  }}>
                 {user.name || user.username || 'User'}
               </span>
             </div>

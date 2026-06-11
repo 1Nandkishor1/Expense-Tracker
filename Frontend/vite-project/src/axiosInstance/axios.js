@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 let api=axios.create({
-    baseURL:"/api",
+    baseURL:"http://localhost:3000/api",
     withCredentials:true
 })
 

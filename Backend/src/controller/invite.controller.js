@@ -30,7 +30,7 @@ async function inviteByLink(req,res){
 
   return  res.status(201).json({
         message:"Invite Link created Successfully",
-        inviteLink:`http://localhost:5173/invite/${token}`,
+        inviteLink: `${process.env.CLIENT_URL}/invite/${token}`,
         invite:invite
     })}
     catch(err){

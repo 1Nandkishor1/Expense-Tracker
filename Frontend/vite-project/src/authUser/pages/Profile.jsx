@@ -12,6 +12,7 @@ const Profile = () => {
     const [error, seterror] = useState(null)
     const [successmessage, setsuccessmessage] = useState(null)
     const [avatarpreview, setavatarpreview] = useState(user?.avatar?.url || null)
+    
 
     useEffect(() => {
         if (user) {

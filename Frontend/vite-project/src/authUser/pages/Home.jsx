@@ -8,11 +8,11 @@ const Home = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Redirect to dashboard if logged in
-  useEffect(() => {
-    if (!loading && user) {
-      navigate('/groups');
-    }
-  }, [user, loading, navigate]);
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     navigate('/groups');
+  //   }
+  // }, [user, loading, navigate]);
 
   useEffect(() => {
     // 1. Initialize Lucide Icons
