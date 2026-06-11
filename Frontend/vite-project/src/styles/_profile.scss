@@ -1,0 +1,154 @@
+@import 'variables';
+@import 'mixins';
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $spacing-xl $spacing-md;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.profile-card {
+  @include card-style;
+  width: 100%;
+  max-width: 500px;
+  background-color: $color-surface;
+  color: $color-text-dark;
+  padding: $spacing-xl $spacing-lg;
+  border-radius: $radius-lg;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid $color-border;
+  text-align: center;
+
+  &:hover {
+    transform: none;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__avatar-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin-bottom: $spacing-md;
+  }
+
+  &__avatar-container {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid $color-primary;
+    box-shadow: 0 4px 15px rgba($color-primary, 0.2);
+    background-color: #F8FAFC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    transition: $transition-fast;
+    cursor: pointer;
+  }
+
+  &__avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: $transition-fast;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 3px solid $color-primary;
+  }
+
+  &__avatar-wrapper:hover &__avatar-overlay {
+    opacity: 1;
+  }
+
+  &__avatar-label {
+    margin-top: $spacing-xs;
+    color: $color-primary;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: $transition-fast;
+    display: inline-block;
+
+    &:hover {
+      color: $color-primary-hover;
+      text-decoration: underline;
+    }
+  }
+
+  &__title {
+    color: $color-text-dark;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__subtitle {
+    color: $color-text-muted;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    text-align: left;
+  }
+
+  &__logout-section {
+    border-top: 1px solid $color-border;
+    padding-top: $spacing-lg;
+    margin-top: $spacing-lg;
+    display: flex;
+    justify-content: center;
+
+    .btn--danger {
+      width: 100%;
+    }
+  }
+}
+
+.success-message {
+  background-color: rgba($color-primary, 0.08);
+  border: 1px solid rgba($color-primary, 0.2);
+  color: darken($color-primary, 5%);
+  padding: $spacing-md;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  width: 100%;
+  font-weight: 500;
+}

@@ -1,0 +1,76 @@
+@import 'variables';
+@import 'mixins';
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: $spacing-md;
+  background-color: $color-bg;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: $color-surface;
+  padding: $spacing-xl $spacing-lg;
+  border-radius: $radius-lg;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+
+  &__title {
+    color: $color-text-dark;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__subtitle {
+    color: $color-text-muted;
+    font-size: 0.95rem;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__footer {
+    font-size: 0.9rem;
+    color: lighten($color-text-dark, 15%);
+    margin-top: $spacing-md;
+
+    a {
+      font-weight: 600;
+      color: $color-primary;
+
+      &:hover {
+        color: $color-primary-hover;
+      }
+    }
+  }
+
+  &__error {
+    @extend .error-message;
+    margin-top: -$spacing-xs;
+    margin-bottom: $spacing-md;
+    text-align: left;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
