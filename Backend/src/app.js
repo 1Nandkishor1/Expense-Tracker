@@ -35,9 +35,11 @@ app.use('/api/settlement', settlementRoute);
 app.use('/api/profile', profileRoute);
 
 // static files and catch-all — always last ✅
-app.use(express.static(path.join(__dirname, 'dist')))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+app.use(express.static(path.join(__dirname, 'public', 'dist')))
+
+// catch-all
+app.use('*name', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'))
 })
 
 module.exports = app;
