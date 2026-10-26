@@ -12,10 +12,10 @@ let inviteSchema=new mongoose.Schema({
         required:true,
         unique:true,
     },
-    email:{
-        type:String,
-        default:"",
-    },
+    // email:{
+    //     type:String,
+    //     default:"",
+    // },
     type:{
         type:String,
         enum:["email","qr","link"],
@@ -28,6 +28,6 @@ let inviteSchema=new mongoose.Schema({
     }
 },{timestamps:true})
 
-let inviteModel=mongoose.model('invite',inviteSchema);
+let inviteModel=mongoose.model('invites',inviteSchema);
 
 module.exports=inviteModel;

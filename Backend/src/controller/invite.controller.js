@@ -27,6 +27,8 @@ async function inviteByLink(req,res){
         type:'link',
         expiresAt:new Date(Date.now()+24+60*60*1000)
     })
+    console.log("Created invite:", invite);
+    console.log("Invite ID:", invite._id); 
 
   return  res.status(201).json({
         message:"Invite Link created Successfully",
