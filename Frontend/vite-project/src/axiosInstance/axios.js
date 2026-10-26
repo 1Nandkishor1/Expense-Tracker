@@ -1,11 +1,16 @@
 
 import axios from 'axios'
 
-let api=axios.create({
-    baseURL:"http://localhost:3000/api",
-    withCredentials:true
-})
-
+// let api=axios.create({
+//     baseURL:"http://localhost:3000/api",
+//     withCredentials:true
+// })
+const api = axios.create({
+  baseURL: import.meta.env.PROD
+    ? "/api"
+    : "http://localhost:3000/api",
+  withCredentials: true
+});
 // api.interceptors.request.use((config)=>{
 //     let token=localStorage.getItem('token');
 //     if(token){
