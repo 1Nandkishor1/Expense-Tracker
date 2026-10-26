@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 export function useGroupDetail(){
     let navigate=useNavigate()
     const [loading, setloading] = useState(true)
+    const [inviteLoading, setInviteLoading] = useState(false)
     const [group, setgroup] = useState([])
     const [expenses, setexpenses] = useState([])
     const [balance, setbalance] = useState(null)
@@ -60,10 +61,9 @@ export function useGroupDetail(){
     
     async function inviteByLinkHook(id){
         try{
-            setloading(true)
+            setInviteLoading(true)
             let response=await inviteByLink(id)
             setlink(response.inviteLink)
-            setloading(false)
         }
         catch(err){
             console.log("Error:", err);
@@ -71,7 +71,7 @@ export function useGroupDetail(){
 
         }
         finally{
-            setloading(false)
+            setInviteLoading(false)
         }
 
     }
@@ -107,6 +107,6 @@ export function useGroupDetail(){
 
     }
 
-return {group,expenses,balance,error,loading,link,fetchGroupDetailHook,addExpenseHook,inviteByLinkHook,deleteExpenseHook,joinByLinkHook}
+return {group,expenses,balance,error,loading,inviteLoading,link,fetchGroupDetailHook,addExpenseHook,inviteByLinkHook,deleteExpenseHook,joinByLinkHook}
 
 }

@@ -19,7 +19,7 @@ export const AuthProvider = ({children}) => {
             .catch(()=>localStorage.removeItem('token'))
             .finally(()=>setLoading(false))
             // console.log(user)
-            // console.log('ho raha')
+            
         }
 
         else{

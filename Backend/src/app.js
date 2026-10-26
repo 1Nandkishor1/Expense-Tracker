@@ -5,13 +5,26 @@ const cors = require('cors');
 
 const app = express();
 
-// ✅ allow both localhost and production domain
+
+// app.use(cors({
+//   credentials: true,
+//   origin : 'http://localhost:5173'
+// }));
+
 app.use(cors({
   credentials: true,
-  origin: process.env.NODE_ENV === 'production'
-    ? process.env.CLIENT_URL        // your render URL e.g. https://splitease.onrender.com
-    : 'http://localhost:5173'
+  origin: [
+    'http://localhost:5173',
+    process.env.Frontend_URL
+  ]
 }));
+
+// app.use(cors({
+//   credentials: true,
+//   origin: process.env.NODE_ENV === 'production'
+//     ? process.env.CLIENT_URL        
+//     : 'http://localhost:5173'
+// }));
 
 app.use(express.json());
 app.use(cookieParser());

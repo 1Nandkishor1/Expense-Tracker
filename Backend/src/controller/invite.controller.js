@@ -30,13 +30,16 @@ async function inviteByLink(req,res){
 
   return  res.status(201).json({
         message:"Invite Link created Successfully",
-        inviteLink: `${process.env.CLIENT_URL}/invite/${token}`,
+        inviteLink: `${process.env.Frontend_URL || 'http://localhost:5173'}/invite/${token}`,
         invite:invite
-    })}
-    catch(err){
-      return  res.status(500).json({Message:"Something Went Wrong", error:err.message})
-    }
+    })
 }
+catch(err){
+  return  res.status(500).json({Message:"Something Went Wrong", error:err.message})
+}
+}
+
+// inviteLink: `${process.env.CLIENT_URL}/invite/${token}`,
 
 async function joinByLink(req,res){
     try {

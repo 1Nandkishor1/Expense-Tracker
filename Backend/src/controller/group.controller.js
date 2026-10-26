@@ -35,7 +35,7 @@ async function createGroup(req,res){
 async function getMyGroups(req, res) {
   try {
     let memberships = await groupMemberModel.find({ user: req.user.id })
-      .populate('group') // gets full group details
+      .populate('group') 
 
     let groups = memberships.map(m => m.group) // extract just the group objects
 

@@ -5,14 +5,16 @@ let bcrypt=require('bcryptjs');
 
 async function authUser(req, res, next) {
   
-  let authHeader = req.headers.authorization
+  // let authHeader = req.headers.authorization
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Token Not Provided' })
-  }
+  // if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  //   return res.status(401).json({ message: 'Token Not Provided' })
+  // }
 
   
-  let token = authHeader.split(' ')[1]
+  // let token = authHeader.split(' ')[1]
+  let token = req.cookies.token;
+  
 
   let isTokenBlacklisted = await redis.get(token)
   if (isTokenBlacklisted) {

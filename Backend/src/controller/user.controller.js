@@ -31,7 +31,7 @@ async function  registerUser(req,res){
         email:user.email,
     },process.env.JWT_SECRET)
 
-    // res.cookie('token', token);
+    res.cookie('token', token);
 
     return res.status(201).json({
         message:'User registered successfully',
@@ -71,7 +71,7 @@ async function loginUser(req,res){
         email:isUserExist.email,
     },process.env.JWT_SECRET)
 
-    // res.cookie('token', token);
+    res.cookie('token', token);
 
     return res.status(200).json({
         message:'User logged in successfully',
@@ -106,15 +106,21 @@ async function getMe(req,res){
 }
 
 async function logoutUser(req,res){
-   let authHeader = req.headers.authorization;
+//    let authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    //     return res.status(400).json({
+    //         message: 'Token not provided'
+    //     });
+    // }
+
+    // let token = authHeader.split(' ')[1];
+    let token = req.cookies.token;
+    if(!token){
         return res.status(400).json({
-            message: 'Token not provided'
-        });
+            message:'Token not provided'
+        })
     }
-
-    let token = authHeader.split(' ')[1];
 
     await redis.set(token, 'blacklisted');
 

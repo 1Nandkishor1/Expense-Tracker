@@ -119,8 +119,8 @@ async function getAllExpense(req,res){
     try{
     let groupId=req.params.id; 
     let expenses=await expenseModel.find({group:groupId})
-    .populate('paidBy','user email avatar')
-    .populate('splits.user','user email avatar')
+    .populate('paidBy','user email avatar name')
+    .populate('splits.user','user email avatar name')
     .sort({createdAt:-1})
 
     return res.status(200).json({

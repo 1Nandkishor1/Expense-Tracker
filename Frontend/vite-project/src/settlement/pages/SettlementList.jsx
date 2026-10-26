@@ -12,6 +12,7 @@ const SettlementList = () => {
     settlements, loading, error,
     createSettlementHook,
     confirmSettlementHook,
+     balanceSettlements,
     uploadScreenshotHook
   } = useSettlements(id)
 
@@ -36,6 +37,9 @@ const SettlementList = () => {
       </div>
     )
   }
+  const myTransactions = balanceSettlements?.filter(
+    (t) => t.from._id === user._id
+  )
 
   async function submitHandler(e) {
     e.preventDefault()
@@ -49,6 +53,16 @@ const SettlementList = () => {
       setFormError(err.message)
     }
   }
+
+    function handleSelectTransaction(e) {
+    const selected = balanceSettlements.find(t => t.to._id === e.target.value)
+    if (selected) {
+      setPaidTo(selected.to._id)
+      setAmount(selected.amount)
+    }
+  }
+
+
 
   async function handleScreenshot(settlementId, file) {
     try {
@@ -77,45 +91,54 @@ const SettlementList = () => {
         )}
       </div>
 
-      {showForm && (
+           {showForm && (
         <div className="settlement-form-card">
           <h2 className="settlement-form-card__title">Record a Payment</h2>
           {formError && <div className="error-message">{formError}</div>}
           <form className="form" onSubmit={submitHandler}>
+
             <div className="form-group">
-              <label className="form-label">Receiver User ID</label>
-              <input
+              <label className="form-label">Pay To</label>
+              <select
                 className="form-input"
-                value={paidTo}
-                onChange={(e) => setPaidTo(e.target.value)}
-                placeholder='Receiver User ID'
+                onChange={handleSelectTransaction}
                 required
-              />
+              >
+                <option value="">Select who you owe</option>
+                {balanceSettlements?.map((t) => (
+                  <option key={t.to._id} value={t.to._id}>
+                    {t.to.name} — ₹{t.amount}
+                  </option>
+                ))}
+              </select>
             </div>
-            
+
             <div className="form-group">
-              <label className="form-label">Amount (₹)</label>
+              <label className="form-label">Amount</label>
               <input
                 className="form-input"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                type='number'
-                placeholder='Amount'
+                type="number"
+                placeholder="Amount"
                 required
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <button className="btn btn--primary" type='submit' style={{ flex: 1 }}>
-                Submit Payment
-              </button>
-              <button className="btn btn--secondary" type="button" onClick={() => setShowForm(false)}>
-                Cancel
-              </button>
-            </div>
+            <button type="submit" className="btn btn--primary">
+              Submit
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
           </form>
         </div>
       )}
+    
 
       {settlements.length === 0 ? (
         <div className="empty-state">

@@ -13,6 +13,7 @@ export function useSettlements(id) {
   const [settlements, setsettlements] = useState([]);
   const [balances, setBalances] = useState(null);
   const [error, seterror] = useState(null);
+  const [balanceSettlements, setBalanceSettlements] = useState([]);
 
   useEffect(() => {
     getGroupSettlementsHook();
@@ -25,10 +26,12 @@ export function useSettlements(id) {
       const [settlementRes, balanceRes] = await Promise.all([
         getGroupSettlements(id),
         getGroupBalance(id),
+        
       ]);
 
       setsettlements(settlementRes.settlements);
       setBalances(balanceRes);
+      setBalanceSettlements(balanceRes.settlements); 
     } catch (err) {
       seterror(err.message);
     } finally {
@@ -93,6 +96,7 @@ export function useSettlements(id) {
     balances,
     error,
     getGroupSettlementsHook,
+    balanceSettlements,
     createSettlementHook,
     confirmSettlementHook,
     uploadScreenshotHook,

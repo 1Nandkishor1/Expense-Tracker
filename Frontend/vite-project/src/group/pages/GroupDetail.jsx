@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useGroupDetail } from '../hooks/useGroupDetail'
 import { useContext } from 'react'
@@ -9,17 +9,33 @@ const GroupDetail = () => {
     let context = useContext(AuthContext)
     let { user } = context;
     let { id } = useParams();
-    let { loading, error, link, group, balance, expenses, inviteByLinkHook, fetchGroupDetailHook, addExpenseHook, deleteExpenseHook } = useGroupDetail()
+    let { loading, error, link, inviteLoading, group, balance, expenses, inviteByLinkHook, fetchGroupDetailHook, addExpenseHook, deleteExpenseHook } = useGroupDetail()
     const [Error, setError] = useState('')
     const [showExpenseForm, setshowExpenseForm] = useState(false)
     const [description, setdescription] = useState('')
     const [amount, setamount] = useState('')
     const [category, setcategory] = useState('')
     const [splitType, setsplitType] = useState('equal')
+    const [showInvitePopover, setShowInvitePopover] = useState(false)
+    const [copied, setCopied] = useState(false)
+    const invitePopoverRef = useRef(null)
 
     useEffect(() => {
         fetchGroupDetailHandler();
     }, [])
+
+    // Close invite popover when clicking outside
+    // Must be here (before early returns) to obey Rules of Hooks
+    useEffect(() => {
+        if (!showInvitePopover) return;
+        const handleClickOutside = (e) => {
+            if (invitePopoverRef.current && !invitePopoverRef.current.contains(e.target)) {
+                setShowInvitePopover(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showInvitePopover]);
 
     if (loading) {
         return (
@@ -36,6 +52,34 @@ const GroupDetail = () => {
                 <span>⚠️ Error: {error.message || error}</span>
             </div>
         )
+    }
+
+
+
+    async function handleInviteIconClick() {
+        setShowInvitePopover(prev => !prev);
+        if (!link) {
+            try { await inviteByLinkHook(id); } catch (err) { console.error(err); }
+        }
+    }
+
+    async function handleCopyLink() {
+        if (!link) return;
+        try {
+            await navigator.clipboard.writeText(link);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            // fallback
+            const el = document.createElement('textarea');
+            el.value = link;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
     }
 
     async function inviteHandler() {
@@ -74,21 +118,72 @@ const GroupDetail = () => {
 
     return (
         <div className="group-detail">
-            {/* Header section with invite action */}
+            
             <div className="group-detail__header">
                 <div className="group-detail__header-info">
                     <h1 className="group-detail__name">{group?.name}</h1>
                     <p className="group-detail__desc">{group?.description || 'No description provided.'}</p>
                 </div>
                 <div className="group-detail__actions">
-                    <button className="btn btn--secondary" onClick={inviteHandler}>
-                        Create Invite Link
-                    </button>
-                    {link && (
-                        <div className="group-detail__invite-widget">
-                            <span>Link: <strong>{link}</strong></span>
-                        </div>
-                    )}
+                    {/* Google Colab-style invite icon button with popover */}
+                    <div className="invite-btn-wrapper" ref={invitePopoverRef}>
+                        <button
+                            className="invite-icon-btn"
+                            onClick={handleInviteIconClick}
+                            title="Invite members to this group"
+                            aria-label="Invite members"
+                        >
+                            {inviteLoading ? (
+                                <span className="invite-icon-btn__spinner" />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                </svg>
+                            )}
+                            <span>Invite</span>
+                        </button>
+
+                        {showInvitePopover && (
+                            <div className="invite-popover">
+                                <div className="invite-popover__header">
+                                    <span className="invite-popover__title">Invite Members</span>
+                                    <button className="invite-popover__close" onClick={() => setShowInvitePopover(false)}>✕</button>
+                                </div>
+                                <div className="invite-popover__steps">
+                                    <p className="invite-popover__step"><span>1</span> Copy the invite link below</p>
+                                    <p className="invite-popover__step"><span>2</span> Share it with anyone you want to invite</p>
+                                    <p className="invite-popover__step"><span>3</span> They click the link and join automatically</p>
+                                </div>
+                                {inviteLoading ? (
+                                    <div className="invite-popover__loading">Generating link…</div>
+                                ) : link ? (
+                                    <div className="invite-popover__link-row">
+                                        <span className="invite-popover__link-text">{link}</span>
+                                        <button
+                                            className={`invite-popover__copy-btn ${copied ? 'invite-popover__copy-btn--copied' : ''}`}
+                                            onClick={handleCopyLink}
+                                            title="Copy link"
+                                        >
+                                            {copied ? (
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                            ) : (
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                                </svg>
+                                            )}
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="invite-popover__loading">Generating link…</div>
+                                )}
+                                {copied && <p className="invite-popover__copied-msg">✓ Copied to clipboard!</p>}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -150,7 +245,7 @@ const GroupDetail = () => {
                                         <option value="travel">travel</option>
                                         <option value="shopping">Shopping</option>
                                         <option value="bills">Bills</option>
-                                        <option value="entertainement">Entertainment</option>
+                                        <option value="entertainment">Entertainment</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>

@@ -325,6 +325,7 @@
   }
 }
 
+
 .expense-form-card {
   @extend .group-form-card;
   max-width: 100%;
@@ -336,3 +337,193 @@
     text-align: left;
   }
 }
+
+// --- Invite Icon Button (Google Colab-style) ---
+.invite-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.invite-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.9rem;
+  border-radius: $radius-sm;
+  border: 1px solid rgba($color-primary, 0.35);
+  background-color: rgba($color-primary, 0.06);
+  color: $color-primary;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: rgba($color-primary, 0.14);
+    border-color: $color-primary;
+    box-shadow: 0 0 10px rgba($color-primary, 0.15);
+  }
+
+  &__spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba($color-primary, 0.3);
+    border-left-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+}
+
+// Invite Popover Card
+.invite-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  background-color: lighten($color-bg, 5%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-md;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  padding: $spacing-md;
+  animation: popoverIn 0.18s ease;
+
+  @keyframes popoverIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-sm;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: $color-text-muted;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: $transition-fast;
+
+    &:hover { color: #FFFFFF; background: rgba(255,255,255,0.06); }
+  }
+
+  &__steps {
+    margin-bottom: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: $color-text-muted;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: rgba($color-primary, 0.15);
+      color: $color-primary;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+  }
+
+  &__loading {
+    font-size: 0.82rem;
+    color: $color-text-muted;
+    text-align: center;
+    padding: $spacing-sm 0;
+  }
+
+  &__link-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-sm;
+    padding: 7px 10px;
+  }
+
+  &__link-text {
+    flex: 1;
+    font-size: 0.75rem;
+    color: $color-text-muted;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+  }
+
+  &__copy-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-sm;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.04);
+    color: $color-text-muted;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    &:hover {
+      color: #FFFFFF;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &--copied {
+      color: $color-primary !important;
+      border-color: rgba($color-primary, 0.35) !important;
+      background-color: rgba($color-primary, 0.08) !important;
+    }
+  }
+
+  &__copied-msg {
+    margin-top: $spacing-xs;
+    font-size: 0.78rem;
+    color: $color-primary;
+    font-weight: 500;
+    text-align: right;
+  }
+}
+

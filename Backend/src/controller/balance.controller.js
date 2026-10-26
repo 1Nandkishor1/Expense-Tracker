@@ -41,6 +41,7 @@ async function getGroupBalance(req, res) {
         balanceMap[userId] -= split.amount;
       }
     }
+    
     for (let settlement of settlements) {
       const paidBy = settlement.paidBy.toString();
       const paidTo = settlement.paidTo.toString();
@@ -116,7 +117,7 @@ async function getGroupBalance(req, res) {
     console.log("check6");
   } catch (err) {
     return res.status(500).json({
-      message: "Sonthing Went Wrong",
+      message: "Something Went Wrong",
       error: err.message,
     });
   }

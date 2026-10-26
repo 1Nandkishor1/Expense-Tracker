@@ -69,6 +69,8 @@ const Profile = () => {
 
     async function handleLogout(e){
         try{
+            const confirmed = window.confirm('Are you sure you want to logout?');
+            if (!confirmed) return;
             await logoutHook()
             navigate('/login')
         }
