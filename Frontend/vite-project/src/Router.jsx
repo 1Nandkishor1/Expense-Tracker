@@ -41,8 +41,8 @@ const Router = createBrowserRouter([
         element:<ProtectedRoute><SettlementList/></ProtectedRoute> 
     },
     {
-        path:'/invite/:token',
-        element:<ProtectedRoute><JoinGroup/></ProtectedRoute> 
+        path:'/join/:token',
+        element:<ProtectedRoute><JoinGroup/></ProtectedRoute>
     },{
         path:'/profile',
         element:<ProtectedRoute><Profile/></ProtectedRoute>

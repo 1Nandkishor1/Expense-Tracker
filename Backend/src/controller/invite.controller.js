@@ -30,7 +30,7 @@ async function inviteByLink(req,res){
 
   return  res.status(201).json({
         message:"Invite Link created Successfully",
-        inviteLink: `${process.env.Frontend_URL || 'http://localhost:5173'}/invite/${token}`,
+        inviteLink: `${process.env.Frontend_URL || 'http://localhost:3000'}/api/join/${token}`,
         invite:invite
     })
 }
