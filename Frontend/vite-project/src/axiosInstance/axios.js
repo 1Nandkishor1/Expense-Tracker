@@ -20,7 +20,7 @@
 // // })
 
 // export default api
-
+// VITE_BACKEND_URL=https://your-backend-render-url.onrender.com/api
 import axios from 'axios'
 
 const api = axios.create({
