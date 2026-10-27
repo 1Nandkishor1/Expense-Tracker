@@ -22,10 +22,10 @@ let inviteSchema=new mongoose.Schema({
          default:"email",
 
     },
-    // expiresAt:{
-    //     type:Date,
-    //     required:true,
-    // }
+    expiresAt:{
+        type:Date,
+        required:true,
+    }
 },{timestamps:true})
 
 let inviteModel=mongoose.model('invites',inviteSchema);
